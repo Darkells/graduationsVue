@@ -56,10 +56,12 @@ export default {
       this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return false
         const { data: res } = await this.$http.post('dark/student/login', this.qs.stringify(this.loginForm))
-        if (res.code !== 0) {
+        if (res.statu !== 200) {
           return this.$message.error(res.data.message)
         }
-        this.$message.success(res.msg)
+        // this.$message.success(res.data.message)
+        window.sessionStorage.setItem('token', res.data.token)
+        this.$router.push('/home')
       })
     }
   }
