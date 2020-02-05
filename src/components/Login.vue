@@ -55,7 +55,7 @@ export default {
     login () {
       this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return false
-        const { data: res } = await this.$http.post('dark/student/login', this.qs.stringify(this.loginForm))
+        const { data: res } = await this.$http.post('dark/admin/login', this.qs.stringify(this.loginForm))
         if (res.statu !== 200) {
           return this.$message.error(res.data.message)
         }
