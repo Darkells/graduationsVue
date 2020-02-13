@@ -1,12 +1,13 @@
 <template>
+  <body>
     <div class="login_container">
         <div class="login_box">
             <!-- 图标区域 -->
             <div class="avatar_box">
-                <img src="../assets/logo.png">
+                <img src="../assets/Cat.png">
             </div>
             <!-- 登陆表单区域 -->
-            <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules" lable-width="0px" class="login_form">
+            <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules" lable-width="0px" class="login_form" @keyup.enter.native="login">
                 <!-- 用户名 -->
                 <el-form-item prop="username">
                     <el-input v-model="loginForm.username" prefix-icon="el-icon-user"></el-input>
@@ -23,6 +24,7 @@
             </el-form>
         </div>
     </div>
+  </body>
 </template>
 
 <script>
@@ -56,10 +58,10 @@ export default {
       this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return false
         const { data: res } = await this.$http.post('dark/admin/login', this.qs.stringify(this.loginForm))
-        if (res.statu !== 200) {
-          return this.$message.error(res.data.message)
+        if (res.meta.status !== 200) {
+          return this.$message.error(res.meta.msg)
         }
-        // this.$message.success(res.data.message)
+        this.$message.success(res.meta.msg)
         window.sessionStorage.setItem('token', res.data.token)
         this.$router.push('/home')
       })
@@ -69,15 +71,23 @@ export default {
 </script>
 
 <style lang="less" scoped>
+body{
+  width: 100%;
+  height: 100%;
+  background: url('../../static/white.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-attachment:fixed;
+}
+
 .login_container{
-    background-color: #2b4b6b;
     height: 100%;
 }
 
 .login_box{
     width: 450px;
     height: 300px;
-    background-color: #ffffff;
+    background-color: #00000015;
     border-radius: 3px;
     position: absolute;
     left: 50%;
