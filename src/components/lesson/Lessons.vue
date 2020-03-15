@@ -32,13 +32,18 @@
                 <el-table-column label="任课教师" prop="teaId" align="center"></el-table-column>
                 <el-table-column label="课程类型" prop="lessonType" align="center"></el-table-column>
                 <el-table-column label="课程描述" prop="lessonDesc" align="center"></el-table-column>
+                <el-table-column label="状态" prop="lessonState" align="center">
+                  <template slot-scope="scope">
+                    <el-switch v-model="scope.row.lessonRid" @change="lessonstateChange(scope.row)"></el-switch>
+                  </template>
+                </el-table-column>
                 <el-table-column label="操作" align="center">
-                    <template slot-scope="scope">
-                      <!-- 修改 -->
-                      <el-button type="primary" icon="el-icon-edit" sizi="mini" @click="showEditDialog(scope.row)"></el-button>
-                      <!-- 删除 -->
-                      <el-button type="danger" icon="el-icon-delete" sizi="mini" @click="removeLesson(scope.row.teaId)"></el-button>
-                    </template>
+                  <template slot-scope="scope">
+                    <!-- 修改 -->
+                    <el-button type="primary" icon="el-icon-edit" sizi="mini" @click="showEditDialog(scope.row)"></el-button>
+                    <!-- 删除 -->
+                    <el-button type="danger" icon="el-icon-delete" sizi="mini" @click="removeLesson(scope.row.teaId)"></el-button>
+                  </template>
                 </el-table-column>
             </el-table>
 
@@ -225,6 +230,7 @@ export default {
         this.getLessonList()
       })
     },
+    // 删除课程
     async removeLesson (lessonId) {
       const confirmResult = await this.$confirm('确认删除该课程？', '警告', {
         confirmButtomText: '确认',
@@ -243,6 +249,15 @@ export default {
 
       this.$message.success('删除成功!')
       this.getLessonList()
+    },
+    async lessonstateChange (lesson) {
+      const { data: res } = await this.$http.put('/dark/admin/lessons/' + lesson.lessonId + '/state/' + lesson.lessonRid)
+      console.log(res)
+      if (res.meta.status !== 200) {
+        lesson.lessonRid = !lesson.lessonRid
+        return this.$message.error('更新用户状态失败！')
+      }
+      this.$message.success('更新用户状态成功!')
     }
   }
 }
