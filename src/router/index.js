@@ -9,6 +9,7 @@ import Admins from '../components/users/Admins.vue'
 import Lessons from '../components/lesson/Lessons.vue'
 import Orders from '../components/lesson/Orders.vue'
 import Teacher from '../components/teacher/teacher.vue'
+import Grade from '../components/teacher/grade.vue'
 
 Vue.use(VueRouter)
 
@@ -26,7 +27,8 @@ const routes = [
       { path: '/admins', component: Admins },
       { path: '/Lessons', component: Lessons },
       { path: '/Orders', component: Orders },
-      { path: '/Teacher', component: Teacher }
+      { path: '/Teacher', component: Teacher },
+      { path: '/grade', component: Grade }
     ]
   }
 ]

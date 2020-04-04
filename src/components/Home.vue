@@ -68,7 +68,7 @@ export default {
     async logout () {
       const { data: res } = await this.$http.get('dark/admin/logout')
       if (res.meta.status !== 200) {
-        return this.$message.error('系统异常')
+        return this.$message.error(res.meta.msg)
       }
       this.$message.success(res.meta.msg)
       window.sessionStorage.clear()
